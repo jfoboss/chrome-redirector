@@ -1,8 +1,10 @@
-import { MATCH_TYPES, validateRule, buildRegex } from './rules.js';
+import { t, ALL_SITES, MATCH_TYPES, validateRule, buildRegex, requiredOrigin, requiredOrigins } from './rules.js';
 
 const $ = (id) => document.getElementById(id);
 const tbody = $('rules');
 let rules = [];
+
+const MATCH_LABELS = { exact: 'matchExact', domain: 'matchDomain', prefix: 'matchPrefix', regex: 'matchRegex' };
 
 function newRule(from = '') {
   return { id: crypto.randomUUID(), match: 'exact', from, to: '', enabled: true };
@@ -10,16 +12,17 @@ function newRule(from = '') {
 
 function render(errors = {}) {
   tbody.replaceChildren();
+  $('empty').hidden = rules.length > 0;
   rules.forEach((rule, i) => {
     const tr = document.createElement('tr');
     tr.classList.toggle('disabled', !rule.enabled);
     if (errors[rule.id]) tr.classList.add('invalid');
 
-    const enabled = Object.assign(document.createElement('input'), { type: 'checkbox', checked: rule.enabled, title: 'Включить / выключить' });
+    const enabled = Object.assign(document.createElement('input'), { type: 'checkbox', checked: rule.enabled, title: t('toggleRule') });
     enabled.onchange = () => { rule.enabled = enabled.checked; tr.classList.toggle('disabled', !rule.enabled); };
 
     const match = document.createElement('select');
-    for (const [value, label] of Object.entries(MATCH_TYPES)) match.add(new Option(label, value, false, value === rule.match));
+    for (const value of MATCH_TYPES) match.add(new Option(t(MATCH_LABELS[value]), value, false, value === rule.match));
     match.onchange = () => { rule.match = match.value; };
 
     const from = Object.assign(document.createElement('input'), { type: 'text', value: rule.from, placeholder: 'https://example.com' });
@@ -32,7 +35,13 @@ function render(errors = {}) {
 
     const cell = (cls, ...children) => { const td = document.createElement('td'); if (cls) td.className = cls; td.append(...children); return td; };
     const fromCell = cell('from', from);
-    if (errors[rule.id]) fromCell.append(Object.assign(document.createElement('div'), { className: 'error', textContent: errors[rule.id] }));
+    const note = (className, textContent) => fromCell.append(Object.assign(document.createElement('div'), { className, textContent }));
+    if (errors[rule.id]) {
+      note('error', errors[rule.id]);
+    } else if (rule.enabled && !validateRule(rule)) {
+      // Правило могло прийти из импорта или доступ отозвали в настройках Chrome.
+      chrome.permissions.contains({ origins: [requiredOrigin(rule)] }).then((ok) => { if (!ok) note('warning', t('noAccess')); });
+    }
 
     tr.append(
       cell('', enabled),
@@ -41,9 +50,9 @@ function render(errors = {}) {
       cell('arrow', '→'),
       cell('to', to),
       cell('row-btns',
-        btn('↑', 'Выше', () => move(-1)),
-        btn('↓', 'Ниже', () => move(1)),
-        btn('✕', 'Удалить', () => { rules.splice(i, 1); render(); })),
+        btn('↑', t('moveUp'), () => move(-1)),
+        btn('↓', t('moveDown'), () => move(1)),
+        btn('✕', t('deleteRule'), () => { rules.splice(i, 1); render(); })),
     );
     tbody.append(tr);
   });
@@ -61,18 +70,39 @@ async function validateAll() {
     const err = validateRule(rule);
     if (err) { errors[rule.id] = err; continue; }
     const { isSupported, reason } = await chrome.declarativeNetRequest.isRegexSupported({ regex: buildRegex(rule) });
-    if (!isSupported) errors[rule.id] = `Chrome не поддерживает это выражение: ${reason}`;
+    if (!isSupported) errors[rule.id] = t('regexUnsupported', reason);
   }
   return errors;
 }
 
+// Отзывает доступ к сайтам, которые больше не нужны ни одному правилу.
+async function releaseUnusedOrigins(needed) {
+  const { origins = [] } = await chrome.permissions.getAll();
+  const unused = origins.filter((o) => !needed.includes(o));
+  if (unused.length) await chrome.permissions.remove({ origins: unused });
+}
+
 async function save() {
   rules = rules.filter((r) => r.from.trim() || r.to.trim());
+  // permissions.request работает только по клику пользователя, поэтому идёт до долгой валидации.
+  const origins = requiredOrigins(rules);
+  // Пока выдан доступ ко всем сайтам, Chrome считает отдельные сайты уже разрешёнными и не
+  // запоминает их. Если «все сайты» больше не нужны, отзываем их заранее, чтобы запросить нужные явно.
+  const { origins: current = [] } = await chrome.permissions.getAll();
+  if (current.includes(ALL_SITES) && !origins.includes(ALL_SITES)) {
+    await chrome.permissions.remove({ origins: [ALL_SITES] });
+  }
+  const granted = origins.length === 0 || await chrome.permissions.request({ origins });
+  if (!granted) {
+    render();
+    return setStatus(t('permissionDenied'), true);
+  }
   const errors = await validateAll();
   render(errors);
-  if (Object.keys(errors).length) return setStatus('Исправьте ошибки в выделенных правилах', true);
+  if (Object.keys(errors).length) return setStatus(t('fixErrors'), true);
   await chrome.storage.sync.set({ rules });
-  setStatus('Сохранено');
+  await releaseUnusedOrigins(origins);
+  setStatus(t('saved'));
 }
 
 async function load() {
@@ -94,7 +124,7 @@ $('save').onclick = save;
 
 $('export').onclick = () => {
   const blob = new Blob([JSON.stringify(rules.map(({ id, ...r }) => r), null, 2)], { type: 'application/json' });
-  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: 'redirector-rules.json' });
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: 'redirect-rules.json' });
   a.click();
   URL.revokeObjectURL(a.href);
 };
@@ -105,12 +135,12 @@ $('importFile').onchange = async () => {
   if (!file) return;
   try {
     const list = JSON.parse(await file.text());
-    if (!Array.isArray(list)) throw new Error('ожидается массив правил');
+    if (!Array.isArray(list)) throw new Error(t('importNotArray'));
     rules.push(...list.map((r) => ({ ...newRule(), ...r, id: crypto.randomUUID(), from: String(r.from ?? ''), to: String(r.to ?? '') })));
     render();
-    setStatus(`Импортировано: ${list.length}. Нажмите «Сохранить».`);
+    setStatus(t('imported', String(list.length)));
   } catch (e) {
-    setStatus(`Ошибка импорта: ${e.message}`, true);
+    setStatus(t('importError', e.message), true);
   }
 };
 

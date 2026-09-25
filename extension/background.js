@@ -13,22 +13,9 @@ async function sync() {
   await chrome.action.setBadgeBackgroundColor({ color: enabled ? '#2563eb' : '#9ca3af' });
 }
 
-chrome.runtime.onInstalled.addListener(async ({ reason }) => {
-  if (reason === 'install') {
-    const { rules } = await chrome.storage.sync.get('rules');
-    if (!rules) {
-      await chrome.storage.sync.set({
-        enabled: true,
-        rules: [
-          { id: crypto.randomUUID(), match: 'exact', from: 'https://1cmycloud.com/', to: 'https://1cmycloud.com/console', enabled: true },
-          { id: crypto.randomUUID(), match: 'exact', from: 'https://1cmycloud.com/welcome', to: 'https://1cmycloud.com/console', enabled: true },
-          { id: crypto.randomUUID(), match: 'exact', from: 'https://cloud.vk.ru/', to: 'https://msk.cloud.vk.ru/app', enabled: true },
-        ],
-      });
-      return; // onChanged вызовет sync
-    }
-  }
+chrome.runtime.onInstalled.addListener(({ reason }) => {
   sync();
+  if (reason === 'install') chrome.runtime.openOptionsPage();
 });
 
 chrome.runtime.onStartup.addListener(sync);

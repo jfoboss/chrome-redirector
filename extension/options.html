@@ -1,51 +1,48 @@
 <!doctype html>
-<html lang="ru">
+<html>
 <head>
   <meta charset="utf-8">
-  <title>Redirector — правила</title>
+  <title data-i18n="extName"></title>
   <link rel="stylesheet" href="options.css">
 </head>
 <body>
   <header>
-    <h1>Перенаправления</h1>
-    <label class="switch"><input type="checkbox" id="enabled"> Включено</label>
+    <h1 data-i18n="optionsTitle"></h1>
+    <label class="switch"><input type="checkbox" id="enabled"> <span data-i18n="enabled"></span></label>
   </header>
 
-  <p class="hint">
-    Когда вы открываете адрес из колонки «Откуда», браузер сразу переходит на адрес из «Куда».
-    Правила выше по списку важнее. Работает и для серверных редиректов: если сайт сам уводит
-    на <code>/welcome</code>, добавьте правило для <code>/welcome</code>.
-  </p>
+  <p class="hint" data-i18n-html="hint"></p>
+  <p class="hint" data-i18n="permissionHint"></p>
 
   <table>
     <thead>
-      <tr><th></th><th>Тип</th><th>Откуда</th><th></th><th>Куда</th><th></th></tr>
+      <tr><th></th><th data-i18n="colType"></th><th data-i18n="colFrom"></th><th></th><th data-i18n="colTo"></th><th></th></tr>
     </thead>
     <tbody id="rules"></tbody>
   </table>
+  <p id="empty" class="empty" data-i18n="emptyState" hidden></p>
 
   <div class="actions">
-    <button id="add">+ Добавить правило</button>
-    <button id="save" class="primary">Сохранить</button>
+    <button id="add" data-i18n="addRule"></button>
+    <button id="save" class="primary" data-i18n="save"></button>
     <span id="status"></span>
     <span class="spacer"></span>
-    <button id="export">Экспорт</button>
-    <button id="import">Импорт</button>
+    <button id="export" data-i18n="exportRules"></button>
+    <button id="import" data-i18n="importRules"></button>
     <input type="file" id="importFile" accept="application/json" hidden>
   </div>
 
   <details>
-    <summary>Типы правил</summary>
+    <summary data-i18n="typesSummary"></summary>
     <ul>
-      <li><b>Точный адрес</b> — тот же домен и путь; слэш в конце и параметры после <code>?</code> не важны.
-        <code>https://cloud.vk.ru</code> сработает для <code>https://cloud.vk.ru/</code> и <code>https://cloud.vk.ru/?a=1</code>, но не для <code>/app</code>.</li>
-      <li><b>Весь сайт</b> — любая страница на этом домене.</li>
-      <li><b>Начинается с</b> — адрес начинается с указанного (http и https считаются одинаковыми).</li>
-      <li><b>Регулярное выражение</b> — синтаксис RE2; в «Куда» можно использовать группы <code>\1</code>, <code>\2</code>…
-        Пример: <code>^https://old\.example\.com/(.*)</code> → <code>https://new.example.com/\1</code>.</li>
+      <li data-i18n-html="typesExact"></li>
+      <li data-i18n-html="typesDomain"></li>
+      <li data-i18n-html="typesPrefix"></li>
+      <li data-i18n-html="typesRegex"></li>
     </ul>
   </details>
 
+  <script type="module" src="i18n.js"></script>
   <script type="module" src="options.js"></script>
 </body>
 </html>

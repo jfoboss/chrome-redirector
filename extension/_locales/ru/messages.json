@@ -1,0 +1,146 @@
+{
+  "extName": {
+    "message": "Перенаправления сайтов"
+  },
+  "extShortName": {
+    "message": "Редиректы"
+  },
+  "extDescription": {
+    "message": "Свой список перенаправлений: открываете адрес — сразу попадаете на нужную страницу."
+  },
+  "optionsTitle": {
+    "message": "Перенаправления"
+  },
+  "enabled": {
+    "message": "Включено"
+  },
+  "hint": {
+    "message": "Когда вы открываете адрес из колонки «Откуда», браузер сразу переходит на адрес из «Куда». Правила выше по списку важнее. Если сайт сам уводит вас на другую страницу (например, <code>/welcome</code>), добавьте правило и для неё."
+  },
+  "permissionHint": {
+    "message": "При сохранении Chrome попросит доступ к сайтам из колонки «Откуда» — без него перенаправление не сработает. Содержимое страниц расширение не читает и никуда не отправляет."
+  },
+  "colType": {
+    "message": "Тип"
+  },
+  "colFrom": {
+    "message": "Откуда"
+  },
+  "colTo": {
+    "message": "Куда"
+  },
+  "addRule": {
+    "message": "+ Добавить правило"
+  },
+  "save": {
+    "message": "Сохранить"
+  },
+  "exportRules": {
+    "message": "Экспорт"
+  },
+  "importRules": {
+    "message": "Импорт"
+  },
+  "emptyState": {
+    "message": "Правил пока нет. Нажмите «Добавить правило» или откройте нужный сайт и нажмите на значок расширения."
+  },
+  "typesSummary": {
+    "message": "Типы правил"
+  },
+  "typesExact": {
+    "message": "<b>Точный адрес</b> — тот же домен и путь; слэш в конце и параметры после <code>?</code> не важны. <code>https://example.com</code> сработает для <code>https://example.com/?a=1</code>, но не для <code>/app</code>."
+  },
+  "typesDomain": {
+    "message": "<b>Весь сайт</b> — любая страница на этом домене."
+  },
+  "typesPrefix": {
+    "message": "<b>Начинается с</b> — адрес начинается с указанного (http и https считаются одинаковыми)."
+  },
+  "typesRegex": {
+    "message": "<b>Регулярное выражение</b> — синтаксис RE2; в «Куда» можно использовать группы <code>\\1</code>, <code>\\2</code>… Пример: <code>^https://old\\.example\\.com/(.*)</code> → <code>https://new.example.com/\\1</code>. Требует доступа ко всем сайтам."
+  },
+  "matchExact": {
+    "message": "Точный адрес"
+  },
+  "matchDomain": {
+    "message": "Весь сайт"
+  },
+  "matchPrefix": {
+    "message": "Начинается с"
+  },
+  "matchRegex": {
+    "message": "Регулярное выражение"
+  },
+  "toggleRule": {
+    "message": "Включить / выключить"
+  },
+  "moveUp": {
+    "message": "Выше"
+  },
+  "moveDown": {
+    "message": "Ниже"
+  },
+  "deleteRule": {
+    "message": "Удалить"
+  },
+  "saved": {
+    "message": "Сохранено"
+  },
+  "fixErrors": {
+    "message": "Исправьте ошибки в выделенных правилах"
+  },
+  "permissionDenied": {
+    "message": "Не сохранено: без доступа к сайтам перенаправления не сработают"
+  },
+  "noAccess": {
+    "message": "Нет доступа к сайту — нажмите «Сохранить», чтобы разрешить"
+  },
+  "imported": {
+    "message": "Импортировано: $1. Нажмите «Сохранить»."
+  },
+  "importError": {
+    "message": "Ошибка импорта: $1"
+  },
+  "importNotArray": {
+    "message": "ожидается массив правил"
+  },
+  "regexUnsupported": {
+    "message": "Chrome не поддерживает это выражение: $1"
+  },
+  "errEmptyUrl": {
+    "message": "пустой адрес"
+  },
+  "errInvalidUrl": {
+    "message": "некорректный адрес"
+  },
+  "errScheme": {
+    "message": "поддерживаются только http и https"
+  },
+  "errEmptyRegex": {
+    "message": "пустое регулярное выражение"
+  },
+  "errFrom": {
+    "message": "Откуда: $1"
+  },
+  "errTo": {
+    "message": "Куда: $1"
+  },
+  "errBadRegex": {
+    "message": "Некорректное регулярное выражение: $1"
+  },
+  "errLoop": {
+    "message": "Адрес назначения попадает под это же правило — получится бесконечный редирект"
+  },
+  "popupEnabled": {
+    "message": "Перенаправления включены"
+  },
+  "popupCount": {
+    "message": "Правил: $1, активных: $2"
+  },
+  "popupAddCurrent": {
+    "message": "Перенаправлять этот адрес…"
+  },
+  "popupAllRules": {
+    "message": "Все правила"
+  }
+}

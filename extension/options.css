@@ -7,7 +7,7 @@ table { width: 100%; border-collapse: collapse; }
 th { text-align: left; font-weight: 500; color: #6b7280; padding: 4px; }
 td { padding: 4px; vertical-align: top; }
 td.from, td.to { width: 36%; }
-td.type { min-width: 150px; }
+td.type { min-width: 190px; }
 input[type=text], select { width: 100%; box-sizing: border-box; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; font: inherit; }
 tr.disabled input[type=text], tr.disabled select { opacity: .5; }
 tr.invalid input[type=text] { border-color: var(--err); }
@@ -22,3 +22,5 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 #status { color: #16a34a; }
 #status.err { color: var(--err); }
 code { background: rgba(127,127,127,.15); padding: 1px 4px; border-radius: 4px; }
+.warning { color: #b45309; font-size: 12px; margin-top: 2px; }
+.empty { color: #6b7280; text-align: center; padding: 24px; border: 1px dashed var(--border); border-radius: 8px; }
