@@ -1,8 +1,10 @@
+import { t } from './rules.js';
+
 const $ = (id) => document.getElementById(id);
 
 const { rules = [], enabled = true } = await chrome.storage.sync.get(['rules', 'enabled']);
 $('enabled').checked = enabled;
-$('count').textContent = `Правил: ${rules.length}, активных: ${rules.filter((r) => r.enabled !== false).length}`;
+$('count').textContent = t('popupCount', String(rules.length), String(rules.filter((r) => r.enabled !== false).length));
 $('enabled').onchange = () => chrome.storage.sync.set({ enabled: $('enabled').checked });
 
 const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });

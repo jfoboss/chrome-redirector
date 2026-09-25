@@ -1,0 +1,146 @@
+{
+  "extName": {
+    "message": "Site Redirect Rules"
+  },
+  "extShortName": {
+    "message": "Redirects"
+  },
+  "extDescription": {
+    "message": "Your own list of redirects: open a URL and land straight on the page you actually need."
+  },
+  "optionsTitle": {
+    "message": "Redirects"
+  },
+  "enabled": {
+    "message": "Enabled"
+  },
+  "hint": {
+    "message": "When you open a URL from the “From” column, the browser goes straight to the “To” URL. Rules higher in the list take precedence. If a site redirects you by itself (e.g. to <code>/welcome</code>), add a rule for that page too."
+  },
+  "permissionHint": {
+    "message": "When you save, Chrome will ask for access to the sites in the “From” column — redirects cannot work without it. The extension never reads page content or sends anything anywhere."
+  },
+  "colType": {
+    "message": "Type"
+  },
+  "colFrom": {
+    "message": "From"
+  },
+  "colTo": {
+    "message": "To"
+  },
+  "addRule": {
+    "message": "+ Add rule"
+  },
+  "save": {
+    "message": "Save"
+  },
+  "exportRules": {
+    "message": "Export"
+  },
+  "importRules": {
+    "message": "Import"
+  },
+  "emptyState": {
+    "message": "No rules yet. Click “Add rule”, or open a site and click the extension icon."
+  },
+  "typesSummary": {
+    "message": "Rule types"
+  },
+  "typesExact": {
+    "message": "<b>Exact URL</b> — same domain and path; a trailing slash and anything after <code>?</code> are ignored. <code>https://example.com</code> matches <code>https://example.com/?a=1</code> but not <code>/app</code>."
+  },
+  "typesDomain": {
+    "message": "<b>Whole site</b> — any page on this domain."
+  },
+  "typesPrefix": {
+    "message": "<b>Starts with</b> — the URL starts with the given one (http and https are treated the same)."
+  },
+  "typesRegex": {
+    "message": "<b>Regular expression</b> — RE2 syntax; use groups <code>\\1</code>, <code>\\2</code>… in “To”. Example: <code>^https://old\\.example\\.com/(.*)</code> → <code>https://new.example.com/\\1</code>. Requires access to all sites."
+  },
+  "matchExact": {
+    "message": "Exact URL"
+  },
+  "matchDomain": {
+    "message": "Whole site"
+  },
+  "matchPrefix": {
+    "message": "Starts with"
+  },
+  "matchRegex": {
+    "message": "Regular expression"
+  },
+  "toggleRule": {
+    "message": "Enable / disable"
+  },
+  "moveUp": {
+    "message": "Move up"
+  },
+  "moveDown": {
+    "message": "Move down"
+  },
+  "deleteRule": {
+    "message": "Delete"
+  },
+  "saved": {
+    "message": "Saved"
+  },
+  "fixErrors": {
+    "message": "Fix the errors in the highlighted rules"
+  },
+  "permissionDenied": {
+    "message": "Not saved: redirects cannot work without access to the sites"
+  },
+  "noAccess": {
+    "message": "No access to this site — click “Save” to grant it"
+  },
+  "imported": {
+    "message": "Imported: $1. Click “Save”."
+  },
+  "importError": {
+    "message": "Import failed: $1"
+  },
+  "importNotArray": {
+    "message": "expected an array of rules"
+  },
+  "regexUnsupported": {
+    "message": "Chrome does not support this expression: $1"
+  },
+  "errEmptyUrl": {
+    "message": "empty URL"
+  },
+  "errInvalidUrl": {
+    "message": "invalid URL"
+  },
+  "errScheme": {
+    "message": "only http and https are supported"
+  },
+  "errEmptyRegex": {
+    "message": "empty regular expression"
+  },
+  "errFrom": {
+    "message": "From: $1"
+  },
+  "errTo": {
+    "message": "To: $1"
+  },
+  "errBadRegex": {
+    "message": "Invalid regular expression: $1"
+  },
+  "errLoop": {
+    "message": "The target URL matches this same rule — that would be an endless redirect"
+  },
+  "popupEnabled": {
+    "message": "Redirects enabled"
+  },
+  "popupCount": {
+    "message": "Rules: $1, active: $2"
+  },
+  "popupAddCurrent": {
+    "message": "Redirect this URL…"
+  },
+  "popupAllRules": {
+    "message": "All rules"
+  }
+}
