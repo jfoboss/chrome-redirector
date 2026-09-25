@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <style>
+    :root { color-scheme: light dark; }
+    body { font: 14px/1.4 system-ui, sans-serif; width: 280px; margin: 12px; }
+    label { display: flex; gap: 8px; align-items: center; font-weight: 500; }
+    p { color: #6b7280; margin: 8px 0; word-break: break-all; }
+    button { display: block; width: 100%; margin-top: 8px; font: inherit; padding: 6px; border-radius: 6px; border: 1px solid #d1d5db; background: transparent; cursor: pointer; }
+    button.primary { background: #2563eb; border-color: #2563eb; color: #fff; }
+    button:disabled { opacity: .5; cursor: default; }
+  </style>
+</head>
+<body>
+  <label><input type="checkbox" id="enabled"> Перенаправления включены</label>
+  <p id="count"></p>
+  <button id="addCurrent" class="primary">Перенаправлять этот адрес…</button>
+  <button id="options">Все правила</button>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
