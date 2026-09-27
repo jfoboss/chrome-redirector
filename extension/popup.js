@@ -1,11 +1,18 @@
-import { t } from './rules.js';
+import { t, rulesWithoutAccess } from './rules.js';
+import { loadRules } from './storage.js';
 
 const $ = (id) => document.getElementById(id);
 
-const { rules = [], enabled = true } = await chrome.storage.sync.get(['rules', 'enabled']);
+const [rules, { enabled = true }] = await Promise.all([loadRules(), chrome.storage.sync.get('enabled')]);
 $('enabled').checked = enabled;
 $('count').textContent = t('popupCount', String(rules.length), String(rules.filter((r) => r.enabled !== false).length));
 $('enabled').onchange = () => chrome.storage.sync.set({ enabled: $('enabled').checked });
+
+const noAccess = (await rulesWithoutAccess(rules)).length;
+if (noAccess) {
+  $('noAccess').textContent = t('popupNoAccess', String(noAccess));
+  $('noAccess').hidden = false;
+}
 
 const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 const url = tab?.url || '';
