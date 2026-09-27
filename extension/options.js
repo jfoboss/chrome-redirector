@@ -1,4 +1,9 @@
 import { t, ALL_SITES, MATCH_TYPES, validateRule, buildRegex, requiredOrigin, requiredOrigins } from './rules.js';
+import { loadRules, saveRules, ruleBytes, storedBytes, MAX_RULE_BYTES, SYNC_QUOTA_BYTES } from './storage.js';
+
+// Запас под остальные ключи (общий выключатель, служебные) в общем лимите storage.sync.
+const RULES_BUDGET_BYTES = SYNC_QUOTA_BYTES - 2048;
+const kb = (n) => String(Math.ceil(n / 1024));
 
 const $ = (id) => document.getElementById(id);
 const tbody = $('rules');
@@ -67,7 +72,7 @@ function setStatus(text, isErr = false) {
 async function validateAll() {
   const errors = {};
   for (const rule of rules) {
-    const err = validateRule(rule);
+    const err = ruleBytes(rule) > MAX_RULE_BYTES ? t('errRuleTooLong', kb(MAX_RULE_BYTES)) : validateRule(rule);
     if (err) { errors[rule.id] = err; continue; }
     const { isSupported, reason } = await chrome.declarativeNetRequest.isRegexSupported({ regex: buildRegex(rule) });
     if (!isSupported) errors[rule.id] = t('regexUnsupported', reason);
@@ -84,6 +89,13 @@ async function releaseUnusedOrigins(needed) {
 
 async function save() {
   rules = rules.filter((r) => r.from.trim() || r.to.trim());
+  // Проверяем объём до запроса доступа, чтобы не спрашивать зря.
+  const size = storedBytes(rules);
+  if (size > RULES_BUDGET_BYTES) return setStatus(t('errQuota', kb(size), kb(RULES_BUDGET_BYTES)), true);
+  // Каждое правило — это regexFilter, а их у расширения Chrome допускает не больше 1000.
+  const maxRules = chrome.declarativeNetRequest.MAX_NUMBER_OF_REGEX_RULES;
+  const active = rules.filter((r) => r.enabled !== false).length;
+  if (active > maxRules) return setStatus(t('errTooManyRules', String(active), String(maxRules)), true);
   // permissions.request работает только по клику пользователя, поэтому идёт до долгой валидации.
   const origins = requiredOrigins(rules);
   // Пока выдан доступ ко всем сайтам, Chrome считает отдельные сайты уже разрешёнными и не
@@ -100,15 +112,20 @@ async function save() {
   const errors = await validateAll();
   render(errors);
   if (Object.keys(errors).length) return setStatus(t('fixErrors'), true);
-  await chrome.storage.sync.set({ rules });
+  try {
+    await saveRules(rules);
+  } catch (e) {
+    // Например, превышен лимит синхронизации Chrome на число записей в минуту.
+    return setStatus(t('errSave', e.message), true);
+  }
   await releaseUnusedOrigins(origins);
   setStatus(t('saved'));
 }
 
 async function load() {
-  const data = await chrome.storage.sync.get(['rules', 'enabled']);
-  rules = data.rules || [];
-  $('enabled').checked = data.enabled !== false;
+  const [stored, { enabled = true }] = await Promise.all([loadRules(), chrome.storage.sync.get('enabled')]);
+  rules = stored.map((r) => ({ ...r, id: crypto.randomUUID() }));
+  $('enabled').checked = enabled;
   const from = new URLSearchParams(location.search).get('from');
   if (from) {
     rules.push(newRule(from));

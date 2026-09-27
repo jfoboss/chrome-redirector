@@ -9,12 +9,14 @@
     p { color: #6b7280; margin: 8px 0; word-break: break-all; }
     button { display: block; width: 100%; margin-top: 8px; font: inherit; padding: 6px; border-radius: 6px; border: 1px solid #d1d5db; background: transparent; cursor: pointer; }
     button.primary { background: #2563eb; border-color: #2563eb; color: #fff; }
+    .warning { color: #b45309; }
     button:disabled { opacity: .5; cursor: default; }
   </style>
 </head>
 <body>
   <label><input type="checkbox" id="enabled"> <span data-i18n="popupEnabled"></span></label>
   <p id="count"></p>
+  <p id="noAccess" class="warning" hidden></p>
   <button id="addCurrent" class="primary" data-i18n="popupAddCurrent"></button>
   <button id="options" data-i18n="popupAllRules"></button>
   <script type="module" src="i18n.js"></script>

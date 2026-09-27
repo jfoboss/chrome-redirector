@@ -112,3 +112,12 @@ export function toDnrRules(rules) {
     };
   });
 }
+
+// Включённые корректные правила, для сайтов которых у расширения нет доступа.
+// Так бывает на втором компьютере: правила приходят через синхронизацию,
+// а доступ к сайтам Chrome выдаёт на каждом устройстве отдельно.
+export async function rulesWithoutAccess(rules) {
+  const active = rules.filter((r) => r.enabled !== false && !validateRule(r));
+  const granted = await Promise.all(active.map((r) => chrome.permissions.contains({ origins: [requiredOrigin(r)] })));
+  return active.filter((_, i) => !granted[i]);
+}

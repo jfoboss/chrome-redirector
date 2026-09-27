@@ -142,5 +142,26 @@
   },
   "popupAllRules": {
     "message": "All rules"
+  },
+  "badgeNoAccess": {
+    "message": "Rules without site access: $1. Open the list and click “Save”."
+  },
+  "popupNoAccess": {
+    "message": "Not working without site access: $1. Open “All rules” and click “Save”."
+  },
+  "errQuota": {
+    "message": "Not saved: the rules take $1 KB, but Chrome sync holds about $2 KB. Delete some rules or shorten the regular expressions."
+  },
+  "errSave": {
+    "message": "Could not save: $1"
+  },
+  "errRuleTooLong": {
+    "message": "The rule is too long: “From” and “To” together must fit in $1 KB"
+  },
+  "errTooManyRules": {
+    "message": "Not saved: $1 rules are enabled, but Chrome allows an extension at most $2. Delete or disable some rules."
+  },
+  "badgeError": {
+    "message": "Chrome rejected the rules: $1"
   }
 }
