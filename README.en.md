@@ -2,6 +2,8 @@
 
 # Site Redirect Rules
 
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ibkaigdgfdnicobpfdfgjnpnebghbhhb?label=Chrome%20Web%20Store&logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/ibkaigdgfdnicobpfdfgjnpnebghbhhb)
+
 A Chrome extension with your own list of redirects: open a URL and the browser goes straight to the page you actually need.
 
 | From                          | To                                  |
@@ -52,8 +54,8 @@ Some services solve this themselves: GitHub shows a signed-in user their dashboa
 
 ## Installation
 
-- **From the Chrome Web Store** — open the extension's page and click “Add to Chrome”.
-  How to publish: [`store/PUBLISHING.md`](store/PUBLISHING.md) (in Russian).
+- **From the Chrome Web Store** — open the [extension's page](https://chromewebstore.google.com/detail/ibkaigdgfdnicobpfdfgjnpnebghbhhb) and click “Add to Chrome”.
+  Nothing to build; updates arrive automatically.
 - **For development:** `chrome://extensions` → turn on “Developer mode” →
   “Load unpacked” → select the `extension/` folder.
 
@@ -101,7 +103,7 @@ python3 scripts/make-icons.py    # redraw the icons
 UI strings live in `extension/_locales/{ru,en}/messages.json`.
 
 Release: bump `version` in `extension/manifest.json` and push a `v<version>` tag — GitHub Actions
-builds the ZIP and attaches it to the release.
+builds the ZIP and attaches it to the release. Then upload the ZIP to the Chrome Web Store — see [`store/PUBLISHING.md`](store/PUBLISHING.md) (in Russian).
 
 ## License
 

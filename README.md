@@ -2,6 +2,8 @@
 
 # Site Redirect Rules — перенаправления сайтов
 
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ibkaigdgfdnicobpfdfgjnpnebghbhhb?label=Chrome%20Web%20Store&logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/ibkaigdgfdnicobpfdfgjnpnebghbhhb)
+
 Расширение Chrome со своим списком перенаправлений: открываете адрес, и браузер сразу переходит на нужную страницу.
 
 | Откуда                        | Куда                                |
@@ -52,8 +54,8 @@
 
 ## Установка
 
-- **Из Chrome Web Store** — открыть страницу расширения и нажать «Установить в Chrome».
-  Как опубликовать: [`store/PUBLISHING.md`](store/PUBLISHING.md).
+- **Из Chrome Web Store** — откройте [страницу расширения](https://chromewebstore.google.com/detail/ibkaigdgfdnicobpfdfgjnpnebghbhhb) и нажмите «Установить».
+  Собирать ничего не нужно, обновления приходят автоматически.
 - **Для разработки:** `chrome://extensions` → включить «Режим разработчика» →
   «Загрузить распакованное расширение» → выбрать папку `extension/`.
 
@@ -101,7 +103,7 @@ python3 scripts/make-icons.py    # перерисовать иконки
 Строки интерфейса — в `extension/_locales/{ru,en}/messages.json`.
 
 Релиз: поднять `version` в `extension/manifest.json`, поставить тег `v<версия>` — GitHub Actions
-соберёт ZIP и приложит его к релизу.
+соберёт ZIP и приложит его к релизу. Затем загрузите ZIP в Chrome Web Store — см. [`store/PUBLISHING.md`](store/PUBLISHING.md).
 
 ## Лицензия
 
