@@ -13,6 +13,17 @@
 
 **Язык:** русский (основной), затем добавьте английский.
 
+**Дополнительные поля (Additional fields):**
+
+| Поле | Значение |
+|---|---|
+| Homepage URL | `https://github.com/jfoboss/chrome-redirector` |
+| Support URL | `https://github.com/jfoboss/chrome-redirector/issues` |
+| Official URL | не заполнять — туда можно выбрать только домен, подтверждённый в Google Search Console |
+
+Эти поля меняются без загрузки новой версии. Ссылка на репозиторий есть и в самом пакете
+(`homepage_url` в манифесте) — её видно в `chrome://extensions` → «Сведения» → «Сайт расширения».
+
 ### Подробное описание — русский
 
 ```
