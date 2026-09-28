@@ -108,8 +108,25 @@ python3 scripts/make-icons.py    # перерисовать иконки
 
 Строки интерфейса — в `extension/_locales/{ru,en}/messages.json`.
 
-Релиз: поднять `version` в `extension/manifest.json`, поставить тег `v<версия>` — GitHub Actions
-соберёт ZIP и приложит его к релизу. Затем загрузите ZIP в Chrome Web Store — см. [`store/PUBLISHING.md`](store/PUBLISHING.md).
+## Версионирование и релизы
+
+Версии по [SemVer](https://semver.org/lang/ru/), релизы делает [release-please](https://github.com/googleapis/release-please) по [Conventional Commits](https://www.conventionalcommits.org/ru/):
+
+| Заголовок PR / коммит | Что будет с версией |
+|---|---|
+| `fix: …` | patch: 1.3.0 → 1.3.1 |
+| `feat: …` | minor: 1.3.0 → 1.4.0 |
+| `feat!: …` или `BREAKING CHANGE:` в теле | major: 1.3.0 → 2.0.0 |
+| `docs:`, `ci:`, `chore:`, `refactor:`, `test:` | релиза не будет |
+
+Как это работает:
+
+1. PR мёржится в `main`. CI проверяет, что заголовок PR в формате Conventional Commits (при squash merge он станет сообщением коммита).
+2. `release.yml` держит открытым PR `chore(main): release X.Y.Z`: поднимает версию в `extension/manifest.json` и `version.txt`, дописывает [`CHANGELOG.md`](CHANGELOG.md). Новые коммиты в `main` обновляют этот PR.
+3. Мёрж release PR = релиз: тег `vX.Y.Z`, [GitHub Release](https://github.com/jfoboss/chrome-redirector/releases) с changelog и приложенным ZIP.
+4. ZIP из релиза загружается в Chrome Web Store вручную — см. [`store/PUBLISHING.md`](store/PUBLISHING.md).
+
+Версию вручную не править. Нужна конкретная — пустой коммит с `Release-As: X.Y.Z` в теле.
 
 ## Лицензия
 

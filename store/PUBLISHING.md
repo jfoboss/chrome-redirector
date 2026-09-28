@@ -11,8 +11,7 @@
 ## Первая публикация
 
 1. **Соберите пакет.** Любой способ:
-   - поставьте тег с версией из `extension/manifest.json` — GitHub соберёт ZIP и приложит его к релизу:
-     `git tag v1.1.0 && git push origin v1.1.0`, затем скачайте ZIP со страницы Releases;
+   - скачайте ZIP из [последнего релиза на GitHub](https://github.com/jfoboss/chrome-redirector/releases/latest);
    - или локально: `npm run build` → `dist/site-redirect-rules-<версия>.zip`.
 2. В Developer Dashboard нажмите **New item** и загрузите ZIP.
 3. **Store listing** — заполните по [`listing.md`](listing.md): описание, категория, иконка,
@@ -30,9 +29,11 @@
 
 ## Обновления
 
-1. Увеличьте `version` в `extension/manifest.json` (магазин не примет ту же версию дважды).
-2. Смёржите изменения в `main`, поставьте тег `v<версия>` и запушьте — CI соберёт ZIP в релиз.
+1. Смёржите release PR `chore(main): release X.Y.Z`, который держит открытым release-please
+   (подробнее — в README, раздел «Версионирование и релизы»). GitHub создаст релиз и приложит к нему ZIP.
+2. Скачайте ZIP со [страницы релиза](https://github.com/jfoboss/chrome-redirector/releases/latest).
 3. В Dashboard: ваше расширение → **Package** → **Upload new package** → **Submit for review**.
+   Магазин не примет одну и ту же версию дважды — release-please поднимает её сам.
 
 Пользователи получат обновление автоматически в течение нескольких часов после одобрения.
 
