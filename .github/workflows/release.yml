@@ -1,0 +1,74 @@
+name: Release
+
+# release-please держит открытым PR «chore(main): release X.Y.Z» с новой версией
+# (manifest.json, version.txt) и CHANGELOG. Мёрж этого PR создаёт тег vX.Y.Z и
+# GitHub Release, а job publish собирает ZIP и прикладывает его к релизу.
+# Релиз, созданный вручную через интерфейс GitHub, тоже получает ZIP.
+
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    if: github.event_name != 'release'
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - id: release
+        uses: googleapis/release-please-action@v5
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  publish:
+    needs: release-please
+    # Релизы release-please создаются токеном GITHUB_TOKEN и не порождают событие
+    # release, поэтому публикуем по его выходу; ручные релизы — по событию release.
+    if: >-
+      always() &&
+      (needs.release-please.outputs.release_created == 'true' || github.event_name == 'release')
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ needs.release-please.outputs.tag_name || github.event.release.tag_name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TAG }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+      - name: Версия в теге совпадает с manifest.json
+        run: |
+          version=$(node -p "require('./extension/manifest.json').version")
+          if [ "v$version" != "$TAG" ]; then
+            echo "::error::Тег $TAG не совпадает с версией в manifest.json ($version)"
+            exit 1
+          fi
+      - id: build
+        run: echo "zip=$(scripts/build.sh)" >> "$GITHUB_OUTPUT"
+      - name: ZIP в GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "$TAG" "${{ steps.build.outputs.zip }}" --clobber
+      - name: Summary
+        run: |
+          {
+            echo "### site-redirect-rules ${TAG}"
+            echo "ZIP для Chrome Web Store приложен к релизу: https://github.com/${{ github.repository }}/releases/tag/${TAG}"
+          } >> "$GITHUB_STEP_SUMMARY"

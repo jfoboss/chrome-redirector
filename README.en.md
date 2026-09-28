@@ -108,8 +108,25 @@ python3 scripts/make-icons.py    # redraw the icons
 
 UI strings live in `extension/_locales/{ru,en}/messages.json`.
 
-Release: bump `version` in `extension/manifest.json` and push a `v<version>` tag — GitHub Actions
-builds the ZIP and attaches it to the release. Then upload the ZIP to the Chrome Web Store — see [`store/PUBLISHING.md`](store/PUBLISHING.md) (in Russian).
+## Versioning and releases
+
+Versions follow [SemVer](https://semver.org/); releases are made by [release-please](https://github.com/googleapis/release-please) from [Conventional Commits](https://www.conventionalcommits.org/):
+
+| PR title / commit | Version change |
+|---|---|
+| `fix: …` | patch: 1.3.0 → 1.3.1 |
+| `feat: …` | minor: 1.3.0 → 1.4.0 |
+| `feat!: …` or `BREAKING CHANGE:` in the body | major: 1.3.0 → 2.0.0 |
+| `docs:`, `ci:`, `chore:`, `refactor:`, `test:` | no release |
+
+How it works:
+
+1. A PR is merged into `main`. CI checks that the PR title follows Conventional Commits (with squash merge it becomes the commit message).
+2. `release.yml` keeps a `chore(main): release X.Y.Z` PR open: it bumps the version in `extension/manifest.json` and `version.txt` and extends [`CHANGELOG.md`](CHANGELOG.md). New commits on `main` update that PR.
+3. Merging the release PR is the release: tag `vX.Y.Z`, a [GitHub Release](https://github.com/jfoboss/chrome-redirector/releases) with the changelog and the ZIP attached.
+4. The ZIP from the release is uploaded to the Chrome Web Store by hand — see [`store/PUBLISHING.md`](store/PUBLISHING.md) (in Russian).
+
+Don't edit the version by hand. To force a specific one, push an empty commit with `Release-As: X.Y.Z` in the body.
 
 ## License
 
