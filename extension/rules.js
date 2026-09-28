@@ -121,3 +121,46 @@ export async function rulesWithoutAccess(rules) {
   const granted = await Promise.all(active.map((r) => chrome.permissions.contains({ origins: [requiredOrigin(r)] })));
   return active.filter((_, i) => !granted[i]);
 }
+
+// Ключ, по которому правила считаются одинаковыми: тип + то, что они ловят.
+// Для обычных правил сравниваем построенное выражение — так `example.com`,
+// `https://example.com/` и `http://example.com` считаются одним и тем же адресом.
+export function ruleKey(rule) {
+  let what;
+  try {
+    what = buildRegex(rule);
+  } catch {
+    what = String(rule.from || '').trim();
+  }
+  return `${rule.match}\n${what}`;
+}
+
+const sameTarget = (a, b) => {
+  if (a.match === 'regex' || b.match === 'regex') return String(a.to).trim() === String(b.to).trim();
+  try {
+    return normalizeTarget(a.to) === normalizeTarget(b.to);
+  } catch {
+    return String(a.to).trim() === String(b.to).trim();
+  }
+};
+
+// Раскладывает импортируемые правила относительно существующих:
+//   added      — новых адресов нет в списке, добавляются в конец;
+//   conflicts  — такой адрес уже есть, но ведёт в другое место: { existing, incoming };
+//   duplicates — точно такое же правило уже есть, пропускается.
+// Внутри самого файла повторы тоже схлопываются: побеждает первое вхождение.
+export function planImport(existing, incoming) {
+  const byKey = new Map(existing.map((r) => [ruleKey(r), r]));
+  const seen = new Set();
+  const plan = { added: [], conflicts: [], duplicates: [] };
+  for (const rule of incoming) {
+    const key = ruleKey(rule);
+    if (seen.has(key)) { plan.duplicates.push(rule); continue; }
+    seen.add(key);
+    const current = byKey.get(key);
+    if (!current) plan.added.push(rule);
+    else if (sameTarget(current, rule)) plan.duplicates.push(rule);
+    else plan.conflicts.push({ existing: current, incoming: rule });
+  }
+  return plan;
+}

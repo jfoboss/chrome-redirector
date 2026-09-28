@@ -34,7 +34,7 @@ Some services solve this themselves: GitHub shows a signed-in user their dashboa
 - **Works with redirect chains.** If the site itself redirects `/` to `/welcome`, a rule for `/welcome` still fires.
 - **Keeps the landing page reachable.** An “Exact URL” rule fires only on that page — the rest of the site (pricing, docs, news) opens as usual. Any rule can be switched off with its checkbox, and all of them with the master switch.
 - **Same rules on every computer.** The rule list syncs across your Chrome browsers. Site access is granted by Chrome on each computer separately: on a new computer the icon shows “!” — open the rule list and click “Save”.
-- **Easy to share with your team.** Export the rules to JSON and import them back — handy for handing colleagues a set of rules for shared work tools. Imported rules are added to yours and start working after you click “Save”.
+- **Easy to share with your team.** Export the rules to JSON and import them back — handy for handing colleagues a set of rules for shared work tools. Imported rules are added to yours and start working after you click “Save”. If you already have a rule for the same address, the extension shows the matches and asks which ones to replace; exact copies are skipped.
 - **Sees nothing.** Chrome performs the redirect itself; the extension never sees your history or page content (see “Privacy”).
 
 ## Examples
@@ -69,8 +69,8 @@ Some services solve this themselves: GitHub shows a signed-in user their dashboa
 
 - Extension icon → **Redirect this URL…** — opens the rule list with a new row whose “From” is already set to the current page's URL (without the `?` parameters). Fill in “To” and click “Save”.
 - Icon → **All rules** — the list: order, on/off, JSON import/export.
-- When you save, Chrome asks for access to the sites in the “From” column:
-  redirects cannot work without it. Access to sites that no rule needs any more is released automatically.
+- When you save, the extension first explains which sites need access and why, then Chrome asks to “Read and change your data” on them — that is how Chrome words any site access. Without it
+  redirects cannot work. Access to sites that no rule needs any more is released automatically.
 - The icon shows the state: a number — how many rules are working; **!** — some rules have no access to their site (open the list and click “Save”); **off** — redirects are turned off; **err** — Chrome rejected the rules (details in the icon's tooltip).
 
 Rule types:
