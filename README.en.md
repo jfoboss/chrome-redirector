@@ -3,6 +3,11 @@
 # Site Redirect Rules
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ibkaigdgfdnicobpfdfgjnpnebghbhhb?label=Chrome%20Web%20Store&logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/ibkaigdgfdnicobpfdfgjnpnebghbhhb)
+[![Release](https://img.shields.io/github/v/release/jfoboss/chrome-redirector?sort=semver)](https://github.com/jfoboss/chrome-redirector/releases/latest)
+[![Release date](https://img.shields.io/github/release-date/jfoboss/chrome-redirector)](https://github.com/jfoboss/chrome-redirector/releases/latest)
+[![CI](https://img.shields.io/github/actions/workflow/status/jfoboss/chrome-redirector/ci.yml?branch=main&label=CI)](https://github.com/jfoboss/chrome-redirector/actions/workflows/ci.yml)
+[![Manifest V3](https://img.shields.io/badge/Manifest-V3-4285F4?logo=googlechrome&logoColor=white)](https://developer.chrome.com/docs/extensions/develop/migrate/what-is-mv3)
+[![License](https://img.shields.io/github/license/jfoboss/chrome-redirector)](LICENSE)
 
 A Chrome extension with your own list of redirects: open a URL and the browser goes straight to the page you actually need.
 
@@ -56,6 +61,7 @@ Some services solve this themselves: GitHub shows a signed-in user their dashboa
 
 - **From the Chrome Web Store** — open the [extension's page](https://chromewebstore.google.com/detail/ibkaigdgfdnicobpfdfgjnpnebghbhhb) and click “Add to Chrome”.
   Nothing to build; updates arrive automatically.
+- **Without the store** — download the ZIP from the [latest release](https://github.com/jfoboss/chrome-redirector/releases/latest), unpack it and load the folder as described below. You will have to update it manually.
 - **For development:** `chrome://extensions` → turn on “Developer mode” →
   “Load unpacked” → select the `extension/` folder.
 
