@@ -42,6 +42,31 @@
     </ul>
   </details>
 
+  <dialog id="accessDialog">
+    <h2 data-i18n="accessTitle"></h2>
+    <p data-i18n="accessIntro"></p>
+    <ul id="accessSites"></ul>
+    <p data-i18n="accessWhy"></p>
+    <p class="hint"><a href="https://github.com/jfoboss/chrome-redirector/blob/main/store/PRIVACY.md" target="_blank" rel="noopener" data-i18n="accessPrivacy"></a></p>
+    <div class="dialog-actions">
+      <button id="accessCancel" data-i18n="cancel"></button>
+      <button id="accessContinue" class="primary" data-i18n="accessContinue"></button>
+    </div>
+  </dialog>
+
+  <dialog id="importDialog">
+    <h2 data-i18n="importTitle"></h2>
+    <p data-i18n="importIntro"></p>
+    <table class="conflicts">
+      <thead><tr><th data-i18n="colFrom"></th><th data-i18n="importCurrent"></th><th data-i18n="importFromFile"></th><th data-i18n="importReplace"></th></tr></thead>
+      <tbody id="importConflicts"></tbody>
+    </table>
+    <div class="dialog-actions">
+      <button id="importCancel" data-i18n="importCancel"></button>
+      <button id="importApply" class="primary" data-i18n="importApply"></button>
+    </div>
+  </dialog>
+
   <script type="module" src="i18n.js"></script>
   <script type="module" src="options.js"></script>
 </body>

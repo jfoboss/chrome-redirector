@@ -93,10 +93,7 @@
     "message": "Not saved: redirects cannot work without access to the sites"
   },
   "noAccess": {
-    "message": "No access to this site — click “Save” to grant it"
-  },
-  "imported": {
-    "message": "Imported: $1. Click “Save”."
+    "message": "Site access not granted yet — Chrome will ask for it when you save"
   },
   "importError": {
     "message": "Import failed: $1"
@@ -163,5 +160,56 @@
   },
   "badgeError": {
     "message": "Chrome rejected the rules: $1"
+  },
+  "noAccessWhy": {
+    "message": "This happens with imported rules, after syncing to another computer (Chrome grants access on each device separately), or if you clicked “Deny” in Chrome’s prompt."
+  },
+  "accessTitle": {
+    "message": "Site access needed"
+  },
+  "accessIntro": {
+    "message": "Chrome will now show a prompt asking to “Read and change your data” on:"
+  },
+  "accessAllSites": {
+    "message": "all sites — required for regular-expression rules"
+  },
+  "accessWhy": {
+    "message": "That is how Chrome words any site access: without it the extension cannot redirect from these addresses. The extension never reads pages or sends anything anywhere — Chrome performs the redirect itself, and the access is used only for that. Once no rules need a site, the access is released."
+  },
+  "accessPrivacy": {
+    "message": "Privacy policy"
+  },
+  "accessContinue": {
+    "message": "Continue"
+  },
+  "cancel": {
+    "message": "Cancel"
+  },
+  "importTitle": {
+    "message": "These addresses are already in your list"
+  },
+  "importIntro": {
+    "message": "Checked rules will be replaced with the version from the file; unchecked ones stay as they are. Exact copies are skipped automatically."
+  },
+  "importCurrent": {
+    "message": "Currently goes to"
+  },
+  "importFromFile": {
+    "message": "In the file"
+  },
+  "importReplace": {
+    "message": "Replace"
+  },
+  "importApply": {
+    "message": "Import"
+  },
+  "importCancel": {
+    "message": "Cancel import"
+  },
+  "importCancelled": {
+    "message": "Import cancelled"
+  },
+  "importedSummary": {
+    "message": "Import: $1 added, $2 replaced, $3 skipped. Click “Save”."
   }
 }
