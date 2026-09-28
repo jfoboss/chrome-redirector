@@ -3,6 +3,11 @@
 # Site Redirect Rules — перенаправления сайтов
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ibkaigdgfdnicobpfdfgjnpnebghbhhb?label=Chrome%20Web%20Store&logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/ibkaigdgfdnicobpfdfgjnpnebghbhhb)
+[![Release](https://img.shields.io/github/v/release/jfoboss/chrome-redirector?sort=semver)](https://github.com/jfoboss/chrome-redirector/releases/latest)
+[![Release date](https://img.shields.io/github/release-date/jfoboss/chrome-redirector)](https://github.com/jfoboss/chrome-redirector/releases/latest)
+[![CI](https://img.shields.io/github/actions/workflow/status/jfoboss/chrome-redirector/ci.yml?branch=main&label=CI)](https://github.com/jfoboss/chrome-redirector/actions/workflows/ci.yml)
+[![Manifest V3](https://img.shields.io/badge/Manifest-V3-4285F4?logo=googlechrome&logoColor=white)](https://developer.chrome.com/docs/extensions/develop/migrate/what-is-mv3)
+[![License](https://img.shields.io/github/license/jfoboss/chrome-redirector)](LICENSE)
 
 Расширение Chrome со своим списком перенаправлений: открываете адрес, и браузер сразу переходит на нужную страницу.
 
@@ -56,6 +61,7 @@
 
 - **Из Chrome Web Store** — откройте [страницу расширения](https://chromewebstore.google.com/detail/ibkaigdgfdnicobpfdfgjnpnebghbhhb) и нажмите «Установить».
   Собирать ничего не нужно, обновления приходят автоматически.
+- **Без магазина** — скачайте ZIP из [последнего релиза](https://github.com/jfoboss/chrome-redirector/releases/latest), распакуйте и загрузите папку, как описано ниже. Обновлять придётся вручную.
 - **Для разработки:** `chrome://extensions` → включить «Режим разработчика» →
   «Загрузить распакованное расширение» → выбрать папку `extension/`.
 
