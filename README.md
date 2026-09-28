@@ -124,7 +124,7 @@ python3 scripts/make-icons.py    # перерисовать иконки
 1. PR мёржится в `main`. CI проверяет, что заголовок PR в формате Conventional Commits (при squash merge он станет сообщением коммита).
 2. `release.yml` держит открытым PR `chore(main): release X.Y.Z`: поднимает версию в `extension/manifest.json` и `version.txt`, дописывает [`CHANGELOG.md`](CHANGELOG.md). Новые коммиты в `main` обновляют этот PR.
 3. Мёрж release PR = релиз: тег `vX.Y.Z`, [GitHub Release](https://github.com/jfoboss/chrome-redirector/releases) с changelog и приложенным ZIP.
-4. ZIP из релиза загружается в Chrome Web Store вручную — см. [`store/PUBLISHING.md`](store/PUBLISHING.md).
+4. Если в репозитории настроены ключи Chrome Web Store API, тот же запуск загружает ZIP в магазин и отправляет его на проверку. Иначе ZIP загружается вручную. Настройка — в [`store/PUBLISHING.md`](store/PUBLISHING.md#автоматическая-публикация).
 
 Версию вручную не править. Нужна конкретная — пустой коммит с `Release-As: X.Y.Z` в теле.
 
