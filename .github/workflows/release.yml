@@ -2,7 +2,8 @@ name: Release
 
 # release-please держит открытым PR «chore(main): release X.Y.Z» с новой версией
 # (manifest.json, version.txt) и CHANGELOG. Мёрж этого PR создаёт тег vX.Y.Z и
-# GitHub Release, а job publish собирает ZIP и прикладывает его к релизу.
+# GitHub Release, а job publish собирает ZIP, прикладывает его к релизу и, если
+# настроены ключи, загружает в Chrome Web Store и отправляет на проверку.
 # Релиз, созданный вручную через интерфейс GitHub, тоже получает ZIP.
 
 on:
@@ -66,9 +67,21 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload "$TAG" "${{ steps.build.outputs.zip }}" --clobber
+      # Загрузка в Chrome Web Store и отправка на проверку. Без секрета
+      # CWS_SERVICE_ACCOUNT_KEY шаг ничего не делает — ZIP загружается вручную.
+      # Настройка: store/PUBLISHING.md, раздел «Автоматическая публикация».
+      - name: Chrome Web Store
+        env:
+          CWS_SERVICE_ACCOUNT_KEY: ${{ secrets.CWS_SERVICE_ACCOUNT_KEY }}
+          CWS_PUBLISHER_ID: ${{ vars.CWS_PUBLISHER_ID }}
+          CWS_EXTENSION_ID: ${{ vars.CWS_EXTENSION_ID || 'ibkaigdgfdnicobpfdfgjnpnebghbhhb' }}
+          CWS_PUBLISH: ${{ vars.CWS_PUBLISH || 'true' }}
+        # shell: bash включает pipefail — иначе ошибку скрипта скрыл бы tee.
+        shell: bash
+        run: node scripts/publish-cws.mjs "${{ steps.build.outputs.zip }}" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Summary
         run: |
           {
             echo "### site-redirect-rules ${TAG}"
-            echo "ZIP для Chrome Web Store приложен к релизу: https://github.com/${{ github.repository }}/releases/tag/${TAG}"
+            echo "ZIP приложен к релизу: https://github.com/${{ github.repository }}/releases/tag/${TAG}"
           } >> "$GITHUB_STEP_SUMMARY"

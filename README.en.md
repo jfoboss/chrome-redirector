@@ -124,7 +124,7 @@ How it works:
 1. A PR is merged into `main`. CI checks that the PR title follows Conventional Commits (with squash merge it becomes the commit message).
 2. `release.yml` keeps a `chore(main): release X.Y.Z` PR open: it bumps the version in `extension/manifest.json` and `version.txt` and extends [`CHANGELOG.md`](CHANGELOG.md). New commits on `main` update that PR.
 3. Merging the release PR is the release: tag `vX.Y.Z`, a [GitHub Release](https://github.com/jfoboss/chrome-redirector/releases) with the changelog and the ZIP attached.
-4. The ZIP from the release is uploaded to the Chrome Web Store by hand — see [`store/PUBLISHING.md`](store/PUBLISHING.md) (in Russian).
+4. If Chrome Web Store API keys are configured in the repository, the same run uploads the ZIP to the store and submits it for review; otherwise the ZIP is uploaded by hand. Setup: [`store/PUBLISHING.md`](store/PUBLISHING.md#автоматическая-публикация) (in Russian).
 
 Don't edit the version by hand. To force a specific one, push an empty commit with `Release-As: X.Y.Z` in the body.
 
